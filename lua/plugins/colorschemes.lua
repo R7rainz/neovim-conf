@@ -1,9 +1,9 @@
 return {
   {
     "ellisonleao/gruvbox.nvim",
-    priority = 1000,
+    lazy = true,
     config = function()
-      -- Default dark theme: hard contrast
+      -- Gruvbox configuration
       require("gruvbox").setup({
         terminal_colors = true, -- add neovim terminal colors
         undercurl = true,
@@ -28,9 +28,8 @@ return {
         transparent_mode = true,
       })
 
-      -- Helper commands so you can easily switch variants:
-      -- :GruvboxDarkHard  -> dark mode, hard contrast (default)
-      -- :GruvboxLightSoft -> light mode, soft contrast, transparent
+      -- Helper command to switch to dark hard variant
+      -- :GruvboxDarkHard  -> dark mode, hard contrast
       vim.api.nvim_create_user_command("GruvboxDarkHard", function()
         require("gruvbox").setup({
           terminal_colors = true,
@@ -58,34 +57,6 @@ return {
         vim.o.background = "dark"
         vim.cmd("colorscheme gruvbox")
       end, {})
-
-      vim.api.nvim_create_user_command("GruvboxLightSoft", function()
-        require("gruvbox").setup({
-          terminal_colors = true,
-          undercurl = true,
-          underline = true,
-          bold = true,
-          italic = {
-            strings = true,
-            emphasis = true,
-            comments = true,
-            operators = false,
-            folds = true,
-          },
-          strikethrough = true,
-          invert_selection = false,
-          invert_signs = false,
-          invert_tabline = false,
-          inverse = true,
-          contrast = "soft", -- light mode: soft contrast
-          palette_overrides = {},
-          overrides = {},
-          dim_inactive = false,
-          transparent_mode = true, -- transparent background
-        })
-        vim.o.background = "light"
-        vim.cmd("colorscheme gruvbox")
-      end, {})
     end,
   },
 
@@ -99,15 +70,18 @@ return {
     },
   },
 
-  -- Rose Pine theme
+  -- Rose Pine theme (default)
   {
     "rose-pine/neovim",
     name = "rose-pine",
-    lazy = true,
-    opts = {
-      styles = { transparency = true },
-      disable_background = true,
-      disable_float_background = true,
-    },
+    lazy = false,
+    config = function()
+      require("rose-pine").setup({
+        variant = "moon",
+        styles = { transparency = true },
+        disable_background = true,
+        disable_float_background = true,
+      })
+    end,
   },
 }
