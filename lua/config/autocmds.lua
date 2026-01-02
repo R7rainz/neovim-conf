@@ -179,3 +179,10 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Makefile indentation settings (tabs)",
 })
 
+vim.api.nvim_create_autocmd("ColorSchemePre", {
+  callback = function()
+    vim.cmd("hi clear")
+    vim.o.background = "dark"
+  end,
+  desc = "Reset highlights and set dark background before colorscheme change",
+})
