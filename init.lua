@@ -2,17 +2,17 @@ vim.g.mapleader = " "
 
 -- Neovide Configuration
 if vim.g.neovide then
-  -- Use the GUI font from options.lua; do not override here
-  vim.g.guifont = "FantasqueSansM Nerd Font Mono:h15"
+  -- JetBrains Mono font
+  vim.g.guifont = "JetBrainsMono Nerd Font:h15"
 
   -- Cursor animations
   vim.g.neovide_cursor_vfx_mode = "pixiedust"
-  vim.g.neovide_cursor_vfx_length = 0.8
-  vim.g.neovide_cursor_vfx_particle_density = 15.0
-  vim.g.neovide_cursor_vfx_opacity = 300.0
-  vim.g.neovide_cursor_vfx_speed = 50.0
-  vim.g.neovide_cursor_animation_length = 0.2
-  vim.g.neovide_cursor_trail_size = 1
+  vim.g.neovide_cursor_vfx_length = 1.2
+  vim.g.neovide_cursor_vfx_particle_density = 25.0
+  vim.g.neovide_cursor_vfx_opacity = 400.0
+  vim.g.neovide_cursor_vfx_speed = 60.0
+  vim.g.neovide_cursor_animation_length = 0.13
+  vim.g.neovide_cursor_trail_size = 0.8
   vim.g.neovide_cursor_antialiasing = true
   vim.g.neovide_cursor_animate_in_insert_mode = true
   vim.g.neovide_cursor_animate_command_line = true
@@ -23,7 +23,7 @@ if vim.g.neovide then
   vim.g.neovide_scroll_animation_far_lines = 1
 
   -- Window settings
-  vim.g.neovide_opacity = 0.87
+  vim.g.neovide_opacity = 1.0
   vim.g.neovide_floating_blur_amount_x = 2.0
   vim.g.neovide_floating_blur_amount_y = 2.0
   vim.g.neovide_floating_shadow = true
@@ -43,7 +43,7 @@ if vim.g.neovide then
   vim.g.neovide_padding_top = 7
 
   -- Fullscreen
-  vim.g.neovide_fullscreen = false
+  vim.g.neovide_fullscreen = true
   vim.g.neovide_remember_window_size = true
 
   -- macOS-style Alt behavior (safe on other OSes too)
