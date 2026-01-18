@@ -25,13 +25,10 @@ return {
           vim.api.nvim_set_hl(0, "EndOfBuffer", { fg = "#262626", bg = bg })
           vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#323232", bg = bg })
 
-          ----------------------------------------------------------------------
-          -- Cursor Dark Contrast++ palette (PERFECT ZONE)
-          ----------------------------------------------------------------------
           local colors = {
-            red = "#f29a9a",
+            red = "#F53838",
             green = "#b9e28c",
-            yellow = "#f4d37a",
+            yellow = "#ffc300",
             blue = "#9fcfff",
             purple = "#cfaeff",
             cyan = "#8fe6d9",
@@ -39,9 +36,6 @@ return {
             gray = "#a8a8a8",
           }
 
-          ----------------------------------------------------------------------
-          -- Syntax
-          ----------------------------------------------------------------------
           vim.api.nvim_set_hl(0, "Comment", { fg = colors.gray, italic = true })
           vim.api.nvim_set_hl(0, "@comment", { fg = colors.gray, italic = true })
 
@@ -125,7 +119,7 @@ return {
 
   {
     "sainnhe/gruvbox-material",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     config = function()
       vim.o.termguicolors = true
@@ -209,11 +203,33 @@ return {
     config = function()
       require("rose-pine").setup({
         styles = {
-          transparency = true,
+          transparency = false, -- IMPORTANT
           italic = true,
           bold = false,
         },
+
         highlight_groups = {
+          ----------------------------------------------------------------
+          -- Kanagawa-style dark background
+          ----------------------------------------------------------------
+          Normal = { bg = "#0c0c0c" },
+          NormalNC = { bg = "#0c0c0c" },
+          NormalFloat = { bg = "#0c0c0c" },
+          SignColumn = { bg = "#0c0c0c" },
+          EndOfBuffer = { fg = "#262626", bg = "#0c0c0c" },
+          FloatBorder = { fg = "muted", bg = "#0c0c0c" },
+
+          -- Cursor & selection
+          CursorLine = { bg = "#151515" },
+          Visual = { bg = "#1e1e1e" },
+
+          -- Line numbers
+          LineNr = { fg = "#4a4a4a", bg = "#0c0c0c" },
+          CursorLineNr = { fg = "gold", bold = true },
+
+          ----------------------------------------------------------------
+          -- Italics (kept exactly how you like them)
+          ----------------------------------------------------------------
           Comment = { italic = true },
           ["@comment"] = { italic = true },
           Keyword = { italic = true },
@@ -222,14 +238,44 @@ return {
           ["@conditional"] = { italic = true },
           Repeat = { italic = true },
           ["@repeat"] = { italic = true },
-          TelescopeBorder = { fg = "highlight_high", bg = "none" },
-          TelescopeNormal = { bg = "none" },
+
+          ----------------------------------------------------------------
+          -- Telescope polish (unchanged, just darker)
+          ----------------------------------------------------------------
+          TelescopeBorder = { fg = "muted", bg = "#0c0c0c" },
+          TelescopeNormal = { bg = "#0c0c0c" },
           TelescopePromptNormal = { bg = "base" },
-          TelescopeResultsNormal = { fg = "subtle", bg = "none" },
+          TelescopeResultsNormal = { fg = "subtle", bg = "#0c0c0c" },
           TelescopeSelection = { fg = "text", bg = "base" },
           TelescopeSelectionCaret = { fg = "rose", bg = "rose" },
         },
+
+        groups = {
+          border = "muted",
+          link = "iris",
+          panel = "surface",
+
+          error = "love",
+          hint = "iris",
+          info = "foam",
+          note = "pine",
+          todo = "rose",
+          warn = "gold",
+
+          git_add = "foam",
+          git_change = "rose",
+          git_delete = "love",
+          git_dirty = "rose",
+          git_ignore = "muted",
+          git_merge = "iris",
+          git_rename = "pine",
+          git_stage = "iris",
+          git_text = "rose",
+          git_untracked = "subtle",
+        },
       })
+
+      vim.cmd.colorscheme("rose-pine")
     end,
   },
 
@@ -241,7 +287,7 @@ return {
     config = function()
       require("onedark").setup({
         style = "darker",
-        transparent = false,
+        transparent = true,
         terminal_colors = true,
         code_style = {
           comments = "italic",
@@ -308,6 +354,175 @@ return {
           }
         end,
       })
+    end,
+  },
+
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = true,
+    priority = 1000,
+    config = function()
+      require("kanagawa").setup({
+        compile = false,
+        undercurl = true,
+        commentStyle = { italic = true },
+        functionStyle = {},
+        keywordStyle = { italic = true },
+        statementStyle = { italic = true },
+        typeStyle = {},
+        transparent = false,
+        dimInactive = false,
+        terminalColors = true,
+
+        colors = {
+          theme = {
+            all = {
+              ui = {
+                bg_gutter = "none",
+              },
+            },
+          },
+        },
+
+        overrides = function(colors)
+          local theme = colors.theme
+          return {
+            -- Base UI
+            Normal = { fg = theme.ui.fg, bg = "#0c0c0c" },
+            NormalNC = { bg = "#0c0c0c" },
+            NormalFloat = { bg = "#0c0c0c" },
+            FloatBorder = { fg = theme.ui.border, bg = "#0c0c0c" },
+            SignColumn = { bg = "#0c0c0c" },
+            EndOfBuffer = { fg = "#262626", bg = "#0c0c0c" },
+
+            -- Cursor / selection
+            CursorLine = { bg = "#151515" },
+            Visual = { bg = "#1e1e1e" },
+
+            -- Line numbers
+            LineNr = { fg = "#4a4a4a", bg = "#0c0c0c" },
+            CursorLineNr = { fg = colors.palette.carpYellow, bold = true },
+
+            -- Comments
+            Comment = { fg = "#8a8a8a", italic = true },
+            ["@comment"] = { fg = "#8a8a8a", italic = true },
+
+            -- Keywords
+            Keyword = { fg = colors.palette.oniViolet, italic = true },
+            ["@keyword"] = { fg = colors.palette.oniViolet, italic = true },
+
+            -- Functions
+            Function = { fg = colors.palette.springBlue },
+            ["@function"] = { fg = colors.palette.springBlue },
+
+            -- Types
+            Type = { fg = colors.palette.lightBlue },
+            ["@type"] = { fg = colors.palette.lightBlue },
+
+            -- Strings
+            String = { fg = colors.palette.springGreen },
+            ["@string"] = { fg = colors.palette.springGreen },
+
+            -- Numbers / constants
+            Number = { fg = colors.palette.surimiOrange },
+            Boolean = { fg = colors.palette.surimiOrange },
+            Constant = { fg = colors.palette.surimiOrange },
+
+            -- Diagnostics
+            DiagnosticError = { fg = colors.palette.samuraiRed },
+            DiagnosticWarn = { fg = colors.palette.roninYellow },
+            DiagnosticInfo = { fg = colors.palette.dragonBlue },
+            DiagnosticHint = { fg = colors.palette.waveAqua },
+
+            DiagnosticUnderlineError = { undercurl = true, sp = colors.palette.samuraiRed },
+            DiagnosticUnderlineWarn = { undercurl = true, sp = colors.palette.roninYellow },
+            DiagnosticUnderlineInfo = { undercurl = true, sp = colors.palette.dragonBlue },
+            DiagnosticUnderlineHint = { undercurl = true, sp = colors.palette.waveAqua },
+
+            -- Completion menu
+            Pmenu = { bg = "#121212", fg = theme.ui.fg },
+            PmenuSel = { bg = "#242424", fg = theme.ui.fg },
+            PmenuBorder = { fg = theme.ui.border, bg = "#121212" },
+          }
+        end,
+      })
+
+      vim.cmd.colorscheme("kanagawa")
+    end,
+  },
+  {
+    "adibhanna/forest-night.nvim",
+    priority = 1000,
+    lazy = true,
+    config = function()
+      vim.o.termguicolors = true
+
+      -- 🔘 Toggle like rose-pine
+      local transparency = true
+
+      vim.cmd.colorscheme("forest-night")
+
+      if transparency then
+        local groups = {
+          -- Core
+          "Normal",
+          "NormalNC",
+          "NormalFloat",
+          "SignColumn",
+          "EndOfBuffer",
+          "MsgArea",
+
+          -- UI
+          "StatusLine",
+          "StatusLineNC",
+          "VertSplit",
+          "WinSeparator",
+          "LineNr",
+          "CursorLineNr",
+          "CursorLine",
+
+          -- Popups / completion
+          "Pmenu",
+          "PmenuSel",
+          "PmenuSbar",
+          "PmenuThumb",
+          "FloatBorder",
+
+          -- Telescope
+          "TelescopeNormal",
+          "TelescopeBorder",
+          "TelescopePromptNormal",
+          "TelescopePromptBorder",
+          "TelescopeResultsNormal",
+          "TelescopePreviewNormal",
+        }
+
+        for _, group in ipairs(groups) do
+          vim.api.nvim_set_hl(0, group, { bg = "none" })
+        end
+      end
+
+      ------------------------------------------------------------------
+      -- Italics (same vibe as your rose-pine config)
+      ------------------------------------------------------------------
+      local italic_groups = {
+        "Comment",
+        "Keyword",
+        "Conditional",
+        "Repeat",
+        "Exception",
+        "Include",
+        "@comment",
+        "@keyword",
+        "@conditional",
+        "@repeat",
+        "@exception",
+        "@include",
+      }
+
+      for _, group in ipairs(italic_groups) do
+        vim.api.nvim_set_hl(0, group, { italic = true })
+      end
     end,
   },
 }
