@@ -30,14 +30,14 @@ return {
           indent = {
             indent_size = 2,
             padding = 1,
-            with_markers = false, -- no │ ├ └ lines
+            with_markers = true, -- no │ ├ └ lines
             indent_marker = "",
             last_indent_marker = "",
             with_expanders = true,
 
             -- 🔥 GOOD tail arrows
-            expander_collapsed = "➥",
-            expander_expanded = "↳",
+            expander_collapsed = "",
+            expander_expanded = "",
 
             expander_highlight = "NeoTreeExpander",
           },
