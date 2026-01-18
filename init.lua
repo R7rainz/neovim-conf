@@ -3,7 +3,11 @@ vim.g.mapleader = " "
 -- Neovide Configuration
 if vim.g.neovide then
   -- JetBrains Mono font
-  vim.g.guifont = "JetBrainsMono Nerd Font:h15"
+  -- vim.o.guifont = "DankMono Nerd Font:h15:b"
+  vim.o.guifont = "Victor Mono:h15"
+
+  -- Enable italic support in Neovide
+  vim.opt.linespace = 0
 
   -- Cursor animations
   vim.g.neovide_cursor_vfx_mode = "pixiedust"
@@ -43,7 +47,7 @@ if vim.g.neovide then
   vim.g.neovide_padding_top = 7
 
   -- Fullscreen
-  vim.g.neovide_fullscreen = true
+  vim.g.neovide_fullscreen = false
   vim.g.neovide_remember_window_size = true
 
   -- macOS-style Alt behavior (safe on other OSes too)
