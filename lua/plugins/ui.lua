@@ -9,13 +9,13 @@ return {
     "nvim-mini/mini.indentscope",
     enabled = false,
   },
-  -- Disable snacks dashboard
+  -- Configure snacks (enable dashboard, disable indent/scope)
   {
     "folke/snacks.nvim",
     opts = {
       indent = { enabled = false },
       scope = { enabled = false },
-      dashboard = { enabled = false },
+      dashboard = { enabled = true },
     },
   },
 }

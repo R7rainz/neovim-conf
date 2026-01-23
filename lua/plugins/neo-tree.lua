@@ -8,12 +8,28 @@ return {
       "MunifTanjim/nui.nvim",
     },
     cmd = "Neotree",
+    -- Disable auto-opening when vim starts with a directory
+    init = function()
+      vim.g.neo_tree_remove_legacy_commands = 1
+      -- Disable LazyVim's auto-open behavior for neo-tree
+      vim.api.nvim_create_autocmd({ "VimEnter", "BufEnter" }, {
+        group = vim.api.nvim_create_augroup("neotree_disable_auto_open", { clear = true }),
+        callback = function()
+          -- Prevent any auto-opening of neo-tree
+          pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_neo_tree")
+        end,
+      })
+    end,
     keys = {
       { "<leader><tab>", "<cmd>Neotree toggle<cr>", desc = "Toggle NeoTree" },
       { "<leader>e", "<cmd>Neotree float<cr>", desc = "NeoTree (floating)" },
     },
     config = function()
       require("neo-tree").setup({
+        -- Prevent auto-opening on startup
+        open_on_setup = false,
+        open_on_setup_file = false,
+        open_on_tab = false,
 
         close_if_last_window = true,
         popup_border_style = "rounded",

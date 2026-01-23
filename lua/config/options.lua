@@ -44,3 +44,7 @@ vim.lsp.inlay_hint.enable(true)
 
 -- Disable list characters (no indent markers, tabs, spaces, etc.)
 vim.opt.list = false
+
+-- Disable netrw (vim's default file explorer) since we use neo-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1

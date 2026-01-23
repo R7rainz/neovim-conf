@@ -3,33 +3,39 @@ return {
     "andweeb/presence.nvim",
     event = "VeryLazy",
     opts = {
-      -- General options
       auto_update = true,
-      neovim_image_text = "Neovim - The Superior Text Editor",
-      main_image = "neovim", -- or "file" to show file icon
+
+      -- 🔹 App visuals
+      neovim_image_text = "Neovim",
+      main_image = "file", -- IMPORTANT (see section 2)
       client_id = "793271441293967371",
-      log_level = nil,
+
       debounce_timeout = 10,
       enable_line_number = false,
-      blacklist = {}, -- Add directories to blacklist like: { "/path/to/secret" }
-      buttons = true,
-      file_assets = nil,
       show_time = true,
+      buttons = true,
 
-      -- Rich presence text (uses %s as placeholder)
+      -- 🔹 Rich Presence text
       editing_text = "Editing %s",
-      file_explorer_text = "Browsing %s",
-      git_commit_text = "Committing changes",
-      plugin_manager_text = "Managing plugins",
       reading_text = "Reading %s",
+      file_explorer_text = "Browsing %s",
+      plugin_manager_text = "Managing plugins",
+
+      -- Shows repo/workspace name
       workspace_text = "Working on %s",
-      line_number_text = "Line %s out of %s",
+
+      -- 🔹 GitHub buttons (MAX 2)
+      buttons = {
+        {
+          label = "GitHub Profile",
+          url = "https://github.com/r7rainz",
+        },
+      },
     },
 
     config = function(_, opts)
       require("presence").setup(opts)
 
-      -- Keymaps for control
       vim.keymap.set("n", "<leader>dc", function()
         vim.cmd("PresenceCancel")
         vim.defer_fn(function()
@@ -38,7 +44,6 @@ return {
         vim.notify("Discord Presence toggled", vim.log.levels.INFO)
       end, { desc = "Toggle Discord Presence", silent = true })
 
-      -- Individual commands
       vim.keymap.set("n", "<leader>dd", "<cmd>PresenceCancel<cr>", {
         desc = "Disable Discord Presence",
         silent = true,
