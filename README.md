@@ -1,8 +1,15 @@
-# Neovim + LazyVim Configuration
+<h1 align="center"><u>Neovim Config</u></h1>
+
+<p align="center">
+  <!-- Replace with hosted logo URLs or local assets if you prefer -->
+  <img src="https://neovim.io/logos/neovim-mark-flat.svg" alt="Neovim Logo" height="64" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/LazyVim/LazyVim/main/assets/logo.svg" alt="LazyVim Logo" height="64" />
+</p>
 
 ![Neovim Dashboard](./screenshots/Pasted%20image%20%282%29.png)
 
-A modern, feature-rich Neovim configuration built on [LazyVim](https://www.lazyvim.org/) with support for multiple programming languages, elegant UI enhancements, and powerful development tools. Tuned for Neovide, smooth scrolling, Discord Rich Presence, and AI-assisted workflows.
+A modern, feature-rich Neovim configuration built on [LazyVim](https://www.lazyvim.org/) with support for multiple programming languages, elegant UI enhancements, and powerful development tools. Tuned for Neovide, smooth scrolling, Discord Rich Presence, AI-assisted workflows, and rich Treesitter-powered syntax highlighting.
 
 ## ✨ Features
 
@@ -105,16 +112,22 @@ The first startup may take 2-3 minutes as plugins are downloaded and compiled.
     │
     └── plugins/            # Plugin specifications and configs
         ├── colorschemes.lua    # Color theme configurations
+        ├── copilot-chat.lua    # GitHub Copilot + CopilotChat integration
         ├── docker.lua          # Docker integration
         ├── example.lua         # Example plugin setup
         ├── go.lua              # Go language support
         ├── java.lua            # Java language support
         ├── linux-tools.lua     # Linux development tools
+        ├── mini.lua            # mini.nvim core plugin
         ├── neo-tree.lua        # File explorer configuration
+        ├── neoscroll.lua       # Smooth scrolling
+        ├── presence.lua        # Discord Rich Presence
         ├── python.lua          # Python language support
         ├── telescope.lua       # Fuzzy finder configuration
         ├── theme.lua           # UI theme customization
+        ├── treesitter.lua      # Treesitter + context and highlighting
         ├── typescript.lua      # TypeScript/JavaScript support
+        ├── ui.lua              # UI tweaks, dashboard, and indent settings
         └── web.lua             # Web development tools
 ```
 
