@@ -1,4 +1,6 @@
-# 🚀 LazyVim Neovim Configuration
+# Neovim + LazyVim Configuration
+
+![Neovim Dashboard](./screenshots/Pasted%20image%20%282%29.png)
 
 A modern, feature-rich Neovim configuration built on [LazyVim](https://www.lazyvim.org/) with support for multiple programming languages, elegant UI enhancements, and powerful development tools. Tuned for Neovide, smooth scrolling, Discord Rich Presence, and AI-assisted workflows.
 
@@ -21,16 +23,15 @@ A modern, feature-rich Neovim configuration built on [LazyVim](https://www.lazyv
 
 ## 📸 Screenshots
 
-```md
-<!-- Neovide UI overview -->
-![Neovim Dashboard](./screenshots/Pasted image (2).png)
+Below are a few more looks at the setup in action.
 
-<!-- Coding in your favorite language -->
-![Neovim Editing Python](./screenshots/Pasted image (3).png)
+![Neovim Editing](./screenshots/Pasted%20image%20%283%29.png)
 
-<!-- Copilot + Telescope + NeoTree combo -->
-![Neovim Dev Workflow](./screenshots/Pasted image.png)
-```
+Focused editing view with LSP, Telescope, smooth scrolling, and Rose Pine Moon.
+
+![Neovim Dev Workflow](./screenshots/Pasted%20image.png)
+
+Dev workflow view with NeoTree, terminal splits, and Copilot integration.
 
 ## 📋 Requirements
 
@@ -45,7 +46,7 @@ A modern, feature-rich Neovim configuration built on [LazyVim](https://www.lazyv
 - **Docker**: For Docker plugin and container development
 - **Language Servers**: Automatically installed for supported languages
 
-## 🚀 Installation
+## Installation
 
 ### 1. Prerequisites
 
