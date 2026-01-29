@@ -1,19 +1,36 @@
-# 🚀 LazyVim Configuration
+# 🚀 LazyVim Neovim Configuration
 
-A modern, feature-rich Neovim configuration built on [LazyVim](https://www.lazyvim.org/) with support for multiple programming languages, elegant UI enhancements, and powerful development tools.
+A modern, feature-rich Neovim configuration built on [LazyVim](https://www.lazyvim.org/) with support for multiple programming languages, elegant UI enhancements, and powerful development tools. Tuned for Neovide, smooth scrolling, Discord Rich Presence, and AI-assisted workflows.
 
 ## ✨ Features
 
 - **LazyVim Foundation**: Built on the excellent LazyVim starter template with intelligent lazy-loading
 - **Multi-Language Support**: First-class support for Python, Go, Java, TypeScript, and Web development
-- **Neovide Ready**: Fully optimized for [Neovide](https://neovide.dev/) GUI with smooth cursor animations and visual enhancements
-- **Beautiful UI**: Modern colorschemes with Rosepine Moon as the default, customizable themes
+- **Neovide Ready**: Fully optimized for [Neovide](https://neovide.dev/) GUI with smooth cursor animations, transparency, padding, and fullscreen controls
+- **Beautiful UI**: Modern colorschemes with Rosepine Moon as the default, plus Gruvbox and Tokyodark variants
+- **Smooth Scrolling**: [neoscroll.nvim](https://github.com/karb94/neoscroll.nvim) for animated scrolling and comfortable navigation
+- **Dashboard & Clean Indent View**: Snacks dashboard enabled, with indent guides from indent-blankline and mini.indentscope disabled for a cleaner look
+- **Discord Rich Presence**: [presence.nvim](https://github.com/andweeb/presence.nvim) integration with handy keymaps to toggle status
+- **AI Assistance**: GitHub Copilot completions and Copilot Chat with rich prompts and keybindings
 - **Powerful Tools**: Integrated development utilities including Docker support, Linux tools, and more
 - **Smart Completion**: Blink completion engine for lightning-fast code completion
 - **File Navigation**: NeoTree file explorer with floating and sidebar modes
 - **Fuzzy Finding**: Telescope for files, live grep, and symbol navigation
 - **Relative Line Numbers**: Hybrid line numbers for efficient navigation
 - **Professional Keybindings**: Carefully curated keyboard shortcuts for optimal workflow
+
+## 📸 Screenshots
+
+```md
+<!-- Neovide UI overview -->
+![Neovim Dashboard](./screenshots/Pasted image (2).png)
+
+<!-- Coding in your favorite language -->
+![Neovim Editing Python](./screenshots/Pasted image (3).png)
+
+<!-- Copilot + Telescope + NeoTree combo -->
+![Neovim Dev Workflow](./screenshots/Pasted image.png)
+```
 
 ## 📋 Requirements
 
