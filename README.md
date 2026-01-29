@@ -27,7 +27,7 @@ Below are a few more looks at the setup in action.
 
 ![Neovim Editing](./screenshots/Pasted%20image%20%283%29.png)
 
-Focused editing view with LSP, Telescope, smooth scrolling, and Rose Pine Moon.
+Focused editing view with LSP, Telescope, smooth scrolling
 
 ![Neovim Dev Workflow](./screenshots/Pasted%20image.png)
 
