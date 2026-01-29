@@ -425,4 +425,57 @@ return {
       end
     end,
   },
+  {
+    "philosofonusus/morta.nvim",
+    name = "morta",
+    priority = 1000,
+    lazy = false,
+    config = function()
+      -- setup morta
+      require("morta").setup({
+        styles = {
+          transparency = false,
+          italic = true,
+          bold = false,
+        },
+      })
+
+      -- load colorscheme
+      vim.cmd.colorscheme("morta")
+
+      -- FORCE highlights after colorscheme
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        pattern = "*",
+        callback = function()
+          local black = "#000000"
+          local neotree_bg = "#0a0a0a" -- slightly lighter than pure black
+          local subtle = "#1a1a1a"
+
+          -- === editor background ===
+          vim.api.nvim_set_hl(0, "Normal", { bg = black })
+          vim.api.nvim_set_hl(0, "NormalNC", { bg = black })
+          vim.api.nvim_set_hl(0, "NormalFloat", { bg = black })
+
+          -- === remove white separator line ===
+          vim.api.nvim_set_hl(0, "WinSeparator", { fg = black, bg = black })
+          vim.api.nvim_set_hl(0, "VertSplit", { fg = black, bg = black })
+
+          -- === Neo-tree separation ===
+          vim.api.nvim_set_hl(0, "NeoTreeNormal", { bg = neotree_bg })
+          vim.api.nvim_set_hl(0, "NeoTreeNormalNC", { bg = neotree_bg })
+          vim.api.nvim_set_hl(0, "NeoTreeEndOfBuffer", { bg = neotree_bg })
+
+          -- cursor line inside neotree
+          vim.api.nvim_set_hl(0, "NeoTreeCursorLine", { bg = subtle })
+
+          -- indent guides
+          vim.api.nvim_set_hl(0, "NeoTreeIndentMarker", { fg = "#303030" })
+
+          -- optional: line numbers cleaner
+          vim.api.nvim_set_hl(0, "LineNr", { bg = black })
+          vim.api.nvim_set_hl(0, "CursorLineNr", { bg = black })
+        end,
+      })
+    end,
+  },
 }
