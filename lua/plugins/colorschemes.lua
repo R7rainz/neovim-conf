@@ -1,5 +1,46 @@
 return {
   {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = true,
+    priority = 1000,
+    config = function()
+      require("catppuccin").setup({
+        flavour = "mocha", -- darkest variant (latte, frappe, macchiato, mocha)
+        transparent_background = true,
+        term_colors = true,
+        styles = {
+          comments = { "italic" },
+          conditionals = { "italic" },
+          keywords = { "italic" },
+          functions = {},
+          strings = {},
+          variables = {},
+        },
+        integrations = {
+          cmp = true,
+          gitsigns = true,
+          nvimtree = true,
+          neotree = true,
+          treesitter = true,
+          telescope = { enabled = true },
+          mason = true,
+          which_key = true,
+        },
+        color_overrides = {
+          mocha = {
+            base = "#000000",
+            mantle = "#000000",
+            crust = "#000000",
+          },
+        },
+      })
+
+      vim.cmd.colorscheme("catppuccin")
+    end,
+  },
+
+  {
     "folke/tokyonight.nvim",
     lazy = true,
     priority = 1000,
@@ -15,6 +56,12 @@ return {
         sidebars = "transparent",
         floats = "transparent",
       },
+      on_colors = function(colors)
+        colors.bg = "#000000"
+        colors.bg_dark = "#000000"
+        colors.bg_float = "#000000"
+        colors.bg_sidebar = "#000000"
+      end,
     },
   },
 
@@ -29,6 +76,7 @@ return {
       -- Base gruvbox (minimal)
       vim.g.gruvbox_material_background = "hard"
       vim.g.gruvbox_material_foreground = "original"
+      vim.g.gruvbox_material_transparent_background = 2 -- full transparency
 
       -- Reduce visual noise
       vim.g.gruvbox_material_ui_contrast = "high"
@@ -45,8 +93,12 @@ return {
       ----------------------------------------------------------------
       local set = vim.api.nvim_set_hl
 
-      -- Warm whites / text
-      set(0, "Normal", { fg = "#E5D5B1", bg = "#1D2021" })
+      -- Warm whites / text - transparent bg
+      set(0, "Normal", { fg = "#E5D5B1", bg = "NONE" })
+      set(0, "NormalNC", { bg = "NONE" })
+      set(0, "NormalFloat", { bg = "NONE" })
+      set(0, "SignColumn", { bg = "NONE" })
+      set(0, "EndOfBuffer", { bg = "NONE" })
       set(0, "Identifier", { fg = "#E5D5B1" })
       set(0, "Function", { fg = "#E5D5B1", bold = true })
 
@@ -93,6 +145,15 @@ return {
         functions = {},
         variables = {},
       },
+      custom_highlights = function(highlights, palette)
+        return {
+          Normal = { bg = "NONE" },
+          NormalNC = { bg = "NONE" },
+          NormalFloat = { bg = "NONE" },
+          SignColumn = { bg = "NONE" },
+          EndOfBuffer = { bg = "NONE" },
+        }
+      end,
     },
   },
 
@@ -104,28 +165,28 @@ return {
     config = function()
       require("rose-pine").setup({
         styles = {
-          transparency = false, -- IMPORTANT
+          transparency = true, -- Enable transparency
           italic = true,
           bold = false,
         },
 
         highlight_groups = {
           ----------------------------------------------------------------
-          -- Kanagawa-style dark background
+          -- Transparent black background
           ----------------------------------------------------------------
-          Normal = { bg = "#0c0c0c" },
-          NormalNC = { bg = "#0c0c0c" },
-          NormalFloat = { bg = "#0c0c0c" },
-          SignColumn = { bg = "#0c0c0c" },
-          EndOfBuffer = { fg = "#262626", bg = "#0c0c0c" },
-          FloatBorder = { fg = "muted", bg = "#0c0c0c" },
+          Normal = { bg = "NONE" },
+          NormalNC = { bg = "NONE" },
+          NormalFloat = { bg = "NONE" },
+          SignColumn = { bg = "NONE" },
+          EndOfBuffer = { fg = "#262626", bg = "NONE" },
+          FloatBorder = { fg = "muted", bg = "NONE" },
 
           -- Cursor & selection
           CursorLine = { bg = "#151515" },
           Visual = { bg = "#1e1e1e" },
 
           -- Line numbers
-          LineNr = { fg = "#4a4a4a", bg = "#0c0c0c" },
+          LineNr = { fg = "#4a4a4a", bg = "NONE" },
           CursorLineNr = { fg = "gold", bold = true },
 
           ----------------------------------------------------------------
@@ -141,12 +202,12 @@ return {
           ["@repeat"] = { italic = true },
 
           ----------------------------------------------------------------
-          -- Telescope polish (unchanged, just darker)
+          -- Telescope polish (transparent)
           ----------------------------------------------------------------
-          TelescopeBorder = { fg = "muted", bg = "#0c0c0c" },
-          TelescopeNormal = { bg = "#0c0c0c" },
-          TelescopePromptNormal = { bg = "base" },
-          TelescopeResultsNormal = { fg = "subtle", bg = "#0c0c0c" },
+          TelescopeBorder = { fg = "muted", bg = "NONE" },
+          TelescopeNormal = { bg = "NONE" },
+          TelescopePromptNormal = { bg = "NONE" },
+          TelescopeResultsNormal = { fg = "subtle", bg = "NONE" },
           TelescopeSelection = { fg = "text", bg = "base" },
           TelescopeSelectionCaret = { fg = "rose", bg = "rose" },
         },
@@ -197,6 +258,12 @@ return {
           strings = "none",
           variables = "none",
         },
+        colors = {
+          bg0 = "#000000",
+          bg1 = "#000000",
+          bg2 = "#000000",
+          bg3 = "#000000",
+        },
       })
     end,
   },
@@ -214,8 +281,8 @@ return {
           keywords = { italic = true },
           functions = {},
           variables = {},
-          sidebars = "dark",
-          floats = "dark",
+          sidebars = "transparent",
+          floats = "transparent",
         },
         sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
         day_brightness = 0.4, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
@@ -223,35 +290,43 @@ return {
         dim_inactive = true, -- dims inactive windows
         lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
 
-        on_colors = function(colors) end,
+        on_colors = function(colors)
+          colors.bg = "#000000"
+          colors.bg_dark = "#000000"
+          colors.bg_float = "#000000"
+          colors.bg_sidebar = "#000000"
+        end,
         on_highlights = function(hl, c)
-          local prompt = "#2d3149"
+          hl.Normal = { bg = "NONE" }
+          hl.NormalNC = { bg = "NONE" }
+          hl.NormalFloat = { bg = "NONE" }
+          hl.SignColumn = { bg = "NONE" }
           hl.TelescopeNormal = {
-            bg = c.bg_dark,
+            bg = "NONE",
             fg = c.fg_dark,
           }
           hl.TelescopeBorder = {
-            bg = c.bg_dark,
+            bg = "NONE",
             fg = c.bg_dark,
           }
           hl.TelescopePromptNormal = {
-            bg = prompt,
+            bg = "NONE",
           }
           hl.TelescopePromptBorder = {
-            bg = prompt,
-            fg = prompt,
+            bg = "NONE",
+            fg = c.bg_dark,
           }
           hl.TelescopePromptTitle = {
-            bg = prompt,
-            fg = prompt,
+            bg = "NONE",
+            fg = c.fg_dark,
           }
           hl.TelescopePreviewTitle = {
-            bg = c.bg_dark,
-            fg = c.bg_dark,
+            bg = "NONE",
+            fg = c.fg_dark,
           }
           hl.TelescopeResultsTitle = {
-            bg = c.bg_dark,
-            fg = c.bg_dark,
+            bg = "NONE",
+            fg = c.fg_dark,
           }
         end,
       })
@@ -271,7 +346,7 @@ return {
         keywordStyle = { italic = true },
         statementStyle = { italic = true },
         typeStyle = {},
-        transparent = false,
+        transparent = true,
         dimInactive = false,
         terminalColors = true,
 
@@ -288,20 +363,20 @@ return {
         overrides = function(colors)
           local theme = colors.theme
           return {
-            -- Base UI
-            Normal = { fg = theme.ui.fg, bg = "#0c0c0c" },
-            NormalNC = { bg = "#0c0c0c" },
-            NormalFloat = { bg = "#0c0c0c" },
-            FloatBorder = { fg = theme.ui.border, bg = "#0c0c0c" },
-            SignColumn = { bg = "#0c0c0c" },
-            EndOfBuffer = { fg = "#262626", bg = "#0c0c0c" },
+            -- Base UI - transparent
+            Normal = { fg = theme.ui.fg, bg = "NONE" },
+            NormalNC = { bg = "NONE" },
+            NormalFloat = { bg = "NONE" },
+            FloatBorder = { fg = theme.ui.border, bg = "NONE" },
+            SignColumn = { bg = "NONE" },
+            EndOfBuffer = { fg = "#262626", bg = "NONE" },
 
             -- Cursor / selection
             CursorLine = { bg = "#151515" },
             Visual = { bg = "#1e1e1e" },
 
             -- Line numbers
-            LineNr = { fg = "#4a4a4a", bg = "#0c0c0c" },
+            LineNr = { fg = "#4a4a4a", bg = "NONE" },
             CursorLineNr = { fg = colors.palette.carpYellow, bold = true },
 
             -- Comments
@@ -341,9 +416,9 @@ return {
             DiagnosticUnderlineHint = { undercurl = true, sp = colors.palette.waveAqua },
 
             -- Completion menu
-            Pmenu = { bg = "#121212", fg = theme.ui.fg },
+            Pmenu = { bg = "NONE", fg = theme.ui.fg },
             PmenuSel = { bg = "#242424", fg = theme.ui.fg },
-            PmenuBorder = { fg = theme.ui.border, bg = "#121212" },
+            PmenuBorder = { fg = theme.ui.border, bg = "NONE" },
           }
         end,
       })
@@ -429,12 +504,12 @@ return {
     "philosofonusus/morta.nvim",
     name = "morta",
     priority = 1000,
-    lazy = false,
+    lazy = true,
     config = function()
       -- setup morta
       require("morta").setup({
         styles = {
-          transparency = false,
+          transparency = true,
           italic = true,
           bold = false,
         },
@@ -447,18 +522,18 @@ return {
       vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*",
         callback = function()
-          local black = "#000000"
           local neotree_bg = "#0a0a0a" -- slightly lighter than pure black
           local subtle = "#1a1a1a"
 
-          -- === editor background ===
-          vim.api.nvim_set_hl(0, "Normal", { bg = black })
-          vim.api.nvim_set_hl(0, "NormalNC", { bg = black })
-          vim.api.nvim_set_hl(0, "NormalFloat", { bg = black })
+          -- === editor background - transparent ===
+          vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+          vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
+          vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
+          vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
 
           -- === remove white separator line ===
-          vim.api.nvim_set_hl(0, "WinSeparator", { fg = black, bg = black })
-          vim.api.nvim_set_hl(0, "VertSplit", { fg = black, bg = black })
+          vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#000000", bg = "NONE" })
+          vim.api.nvim_set_hl(0, "VertSplit", { fg = "#000000", bg = "NONE" })
 
           -- === Neo-tree separation ===
           vim.api.nvim_set_hl(0, "NeoTreeNormal", { bg = neotree_bg })
@@ -472,10 +547,34 @@ return {
           vim.api.nvim_set_hl(0, "NeoTreeIndentMarker", { fg = "#303030" })
 
           -- optional: line numbers cleaner
-          vim.api.nvim_set_hl(0, "LineNr", { bg = black })
-          vim.api.nvim_set_hl(0, "CursorLineNr", { bg = black })
+          vim.api.nvim_set_hl(0, "LineNr", { bg = "NONE" })
+          vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "NONE" })
         end,
       })
+    end,
+  },
+  {
+    "nobbmaestro/nvim-andromeda",
+    priority = 1000, -- load before other UI stuff
+    lazy = true,
+    dependencies = {
+      {
+        "tjdevries/colorbuddy.nvim",
+        branch = "dev",
+      },
+    },
+    config = function()
+      require("andromeda").setup({
+        transparent_bg = true,
+      })
+      vim.cmd.colorscheme("andromeda")
+
+      -- Force transparent backgrounds
+      vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+      vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
+      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
+      vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
+      vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "NONE" })
     end,
   },
 }
