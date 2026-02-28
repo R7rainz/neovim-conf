@@ -24,6 +24,8 @@ vim.o.clipboard = "unnamedplus"
 vim.o.scrolloff = 15
 vim.o.sidescrolloff = 8
 
+vim.api.nvim_set_hl(0, "CursorLine", { bg = "#1f2335" })
+vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#7aa2f7", bold = true })
 -- Disable LSP semantic tokens entirely to stop them overriding treesitter/colorscheme
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
@@ -39,8 +41,35 @@ vim.lsp.handlers["textDocument/semanticTokens/full"] = function() end
 vim.lsp.handlers["textDocument/semanticTokens/full/delta"] = function() end
 vim.lsp.handlers["textDocument/semanticTokens/range"] = function() end
 
--- Enable inlay hints
-vim.lsp.inlay_hint.enable(true)
+-- Enable inlay hints (guarded for older Neovim versions)
+if vim.lsp.inlay_hint and vim.lsp.inlay_hint.enable then
+	vim.lsp.inlay_hint.enable(true)
+end
+
+-- LSP diagnostics: enable virtual text, signs, and underlines with VS Code–style squiggles
+vim.diagnostic.config({
+	virtual_text = {
+		prefix = "●",
+		spacing = 2,
+	},
+	signs = true,
+	underline = true,
+	update_in_insert = false,
+	severity_sort = true,
+})
+
+-- Strong undercurl diagnostics so errors/warnings are clearly visible
+local diag_colors = {
+	error = "#f7768e",
+	warn = "#e0af68",
+	info = "#7aa2f7",
+	hint = "#9ece6a",
+}
+
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { undercurl = true, sp = diag_colors.error })
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { undercurl = true, sp = diag_colors.warn })
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { undercurl = true, sp = diag_colors.info })
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { undercurl = true, sp = diag_colors.hint })
 
 -- Disable list characters (no indent markers, tabs, spaces, etc.)
 vim.opt.list = false

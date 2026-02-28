@@ -1,5 +1,8 @@
 vim.g.mapleader = " "
 
+-- Minimize command line height to remove extra space at the bottom
+vim.opt.cmdheight = 0
+
 -- ═══════════════════════════════════════════════════════════════════════════
 --  NEOVIDE CONFIGURATION
 -- ═══════════════════════════════════════════════════════════════════════════
@@ -9,11 +12,9 @@ if vim.g.neovide then
   --  Typography & Rendering
   -- ─────────────────────────────────────────────────────────────────────────
 
-  vim.o.guifont = "JetBrains Mono NL:h16"
-  -- Alternative: vim.o.guifont = "Victor Mono:h16:i"
-  -- More options: "Monaspace Neon:h15", "Cascadia Code:h15", "FiraCode Nerd Font:h15"
+  vim.o.guifont = "SF Mono:h15"
 
-  vim.opt.linespace = 2 -- Slightly more breathing room between lines
+  vim.opt.linespace = 1 -- Slightly more breathing room between lines
 
   -- ─────────────────────────────────────────────────────────────────────────
   --  Cursor Effects & Animation
@@ -44,7 +45,8 @@ if vim.g.neovide then
   --  Window & Transparency
   -- ─────────────────────────────────────────────────────────────────────────
 
-  vim.g.neovide_opacity = 0.88 -- Slightly less transparent for better readability
+  -- Light macOS-style glass effect
+  vim.g.neovide_opacity = 0.95
   vim.g.neovide_window_blurred = true
 
   vim.g.neovide_floating_blur_amount_x = 3.0
@@ -55,7 +57,7 @@ if vim.g.neovide then
   vim.g.neovide_light_radius = 5
 
   -- Dynamic background (adapts to your colorscheme)
-  vim.g.neovide_background_color = "#0f1117" -- Adjust to match your theme
+  vim.g.neovide_background_color = "#000000" -- Match your black theme
 
   -- ─────────────────────────────────────────────────────────────────────────
   --  Performance & Refresh
@@ -87,7 +89,7 @@ if vim.g.neovide then
   --  Zoom & Scale
   -- ─────────────────────────────────────────────────────────────────────────
 
-  vim.g.neovide_scale_factor = 0.90
+  vim.g.neovide_scale_factor = 1.0
 
   local change_scale_factor = function(delta)
     vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
