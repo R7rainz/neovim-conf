@@ -24,7 +24,7 @@ return {
     config = function()
       vim.g.gruvbox_material_background = "hard"
       vim.g.gruvbox_material_foreground = "mix" -- change to mix/original if you want
-      vim.g.gruvbox_material_transparent_background = 1
+      -- vim.g.gruvbox_material_transparent_background = 1
       vim.g.gruvbox_material_enable_italic = true
       vim.g.gruvbox_material_enable_bold = true
     end,
@@ -160,34 +160,6 @@ return {
     priority = 1000,
     opts = {
       transparent_background = false,
-    },
-  },
-
-  -- Nightfox: calm, dark, non-neon themes (try :colorscheme carbonfox)
-  {
-    "EdenEast/nightfox.nvim",
-    lazy = true,
-    priority = 1000,
-    opts = {
-      options = {
-        transparent = false,
-      },
-      groups = {
-        all = {
-          Normal = { bg = "#000000" },
-          NormalNC = { bg = "#000000" },
-          NormalFloat = { bg = "#000000" },
-          SignColumn = { bg = "#000000" },
-          FoldColumn = { bg = "#000000" },
-          LineNr = { bg = "#000000" },
-          CursorLineNr = { bg = "#000000" },
-          CursorLine = { bg = "#050505" },
-          NeoTreeNormal = { bg = "#000000" },
-          NeoTreeNormalNC = { bg = "#000000" },
-          TelescopeNormal = { bg = "#000000" },
-          TelescopeBorder = { bg = "#000000" },
-        },
-      },
     },
   },
 }

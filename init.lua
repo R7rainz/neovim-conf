@@ -12,7 +12,8 @@ if vim.g.neovide then
   --  Typography & Rendering
   -- ─────────────────────────────────────────────────────────────────────────
 
-  vim.o.guifont = "SF Mono:h15"
+  -- vim.o.guifont = "SF Mono:h15"
+  vim.o.guifont = "Inconsolata LGC Nerd Font Mono:h14"
 
   vim.opt.linespace = 1 -- Slightly more breathing room between lines
 
@@ -21,13 +22,13 @@ if vim.g.neovide then
   -- ─────────────────────────────────────────────────────────────────────────
 
   vim.g.neovide_cursor_vfx_mode = "pixiedust" -- Options: ripple, torpedo, pixiedust, sonicboom, railgun, wireframe
-  vim.g.neovide_cursor_vfx_particle_lifetime = 1.2
-  vim.g.neovide_cursor_vfx_particle_density = 20.0
-  vim.g.neovide_cursor_vfx_opacity = 150.0
+  vim.g.neovide_cursor_vfx_particle_lifetime = 0.7
+  vim.g.neovide_cursor_vfx_particle_density = 40.0
+  vim.g.neovide_cursor_vfx_opacity = 100.0
   vim.g.neovide_cursor_vfx_particle_speed = 10.0
 
-  vim.g.neovide_cursor_animation_length = 0.08 -- Snappier feel
-  vim.g.neovide_cursor_trail_size = 0.6
+  vim.g.neovide_cursor_animation_length = 0.06 -- Snappier feel
+  vim.g.neovide_cursor_trail_size = 1.0
   vim.g.neovide_cursor_antialiasing = true
   vim.g.neovide_cursor_animate_in_insert_mode = true
   vim.g.neovide_cursor_animate_command_line = true
@@ -57,7 +58,7 @@ if vim.g.neovide then
   vim.g.neovide_light_radius = 5
 
   -- Dynamic background (adapts to your colorscheme)
-  vim.g.neovide_background_color = "#000000" -- Match your black theme
+  -- vim.g.neovide_background_color = "#000000" -- Match your black theme
 
   -- ─────────────────────────────────────────────────────────────────────────
   --  Performance & Refresh

@@ -1,3 +1,30 @@
+-- Reset custom highlights on colorscheme change
+vim.api.nvim_create_autocmd("ColorScheme", {
+	group = vim.api.nvim_create_augroup("CustomHighlights", { clear = true }),
+	callback = function()
+		-- Example: Only set custom highlights for specific colorschemes
+		if vim.g.colors_name == "nightfox" or vim.g.colors_name == "carbonfox" then
+			local groups = {
+				Normal = { bg = "#000000" },
+				NormalNC = { bg = "#000000" },
+				NormalFloat = { bg = "#000000" },
+				SignColumn = { bg = "#000000" },
+				FoldColumn = { bg = "#000000" },
+				LineNr = { bg = "#000000" },
+				CursorLineNr = { bg = "#000000" },
+				CursorLine = { bg = "#050505" },
+				NeoTreeNormal = { bg = "#000000" },
+				NeoTreeNormalNC = { bg = "#000000" },
+				TelescopeNormal = { bg = "#000000" },
+				TelescopeBorder = { bg = "#000000" },
+			}
+			for group, opts in pairs(groups) do
+				vim.api.nvim_set_hl(0, group, opts)
+			end
+		end
+		-- Add more colorscheme-specific highlight logic here if needed
+	end,
+})
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
@@ -24,8 +51,7 @@ vim.o.clipboard = "unnamedplus"
 vim.o.scrolloff = 15
 vim.o.sidescrolloff = 8
 
-vim.api.nvim_set_hl(0, "CursorLine", { bg = "#1f2335" })
-vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#7aa2f7", bold = true })
+-- Removed global highlight overrides for CursorLine and CursorLineNr to prevent background issues when switching colorschemes
 -- Disable LSP semantic tokens entirely to stop them overriding treesitter/colorscheme
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
