@@ -123,34 +123,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   desc = "Persist last colorscheme and refresh treesitter",
 })
 
--- Force a unified black background + matching gutters/number column
-vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = function()
-    local bg = "#000000"
-    local subtle = "#050505"
 
-    -- Core window/background
-    vim.api.nvim_set_hl(0, "Normal", { bg = bg })
-    vim.api.nvim_set_hl(0, "NormalNC", { bg = bg })
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = bg })
-    vim.api.nvim_set_hl(0, "SignColumn", { bg = bg })
-    vim.api.nvim_set_hl(0, "FoldColumn", { bg = bg })
-
-    -- Line numbers
-    vim.api.nvim_set_hl(0, "LineNr", { bg = bg })
-    vim.api.nvim_set_hl(0, "CursorLineNr", { bg = bg })
-
-    -- Cursor line (very slightly lighter)
-    vim.api.nvim_set_hl(0, "CursorLine", { bg = subtle })
-
-    -- Popular plugin UIs
-    vim.api.nvim_set_hl(0, "NeoTreeNormal", { bg = bg })
-    vim.api.nvim_set_hl(0, "NeoTreeNormalNC", { bg = bg })
-    vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = bg })
-    vim.api.nvim_set_hl(0, "TelescopeBorder", { bg = bg })
-  end,
-  desc = "Force black background and matching number column",
-})
 
 -- On dashboard/landing buffers, map `p` to global project search (home dir)
 vim.api.nvim_create_autocmd("FileType", {
