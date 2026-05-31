@@ -109,5 +109,5 @@ vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
 
---turning off the virtual texts of lsp
-vim.diagnostic.config({ virtual_text = false })
+-- Disable LSP inlay hints globally
+vim.lsp.inlay_hint.enable(false)
