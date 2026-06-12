@@ -36,7 +36,7 @@ return {
       local nvlsp = require "nvchad.configs.lspconfig"
       nvlsp.defaults()
 
-      local servers = { "html", "cssls", "eslint", "jsonls", "yamlls", "prismals",
+      local servers = { "html", "cssls", "jsonls", "yamlls", "prismals",
         "emmet_language_server", "pyright", "rust_analyzer", "bashls",
         "dockerls", "marksman", "clangd" }
 
