@@ -257,6 +257,9 @@ return {
       end
 
       local function tb(name, opts)
+        if pcall(require, "lazy") then
+          pcall(function() require("lazy").load({ plugins = { "telescope.nvim" } }) end)
+        end
         local ok, builtin = pcall(require, "telescope.builtin")
         if not ok or type(builtin[name]) ~= "function" then
           vim.notify("Telescope is unavailable", vim.log.levels.WARN)
