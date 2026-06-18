@@ -6,7 +6,16 @@ vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
 vim.opt.scrolloff = 8
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard = "unnamed,unnamedplus"
+
+if vim.fn.executable "xsel" == 1 then
+  vim.g.clipboard = {
+    name = "xsel",
+    copy = { ["+"] = "xsel --input --clipboard", ["*"] = "xsel --input --primary" },
+    paste = { ["+"] = "xsel --output --clipboard", ["*"] = "xsel --output --primary" },
+    cache_enabled = 0,
+  }
+end
 vim.opt.relativenumber = true
 
 -- bootstrap lazy and all plugins
@@ -162,3 +171,26 @@ map("i", "jk", "<ESC>")
 map("n", "<leader>w/", "<C-w>v", { desc = "Split vertical" })
 map("n", "<leader>w-", "<C-w>s", { desc = "Split horizontal" })
 map("n", "<leader>ww", "<C-w>w", { desc = "Next window" })
+
+if vim.g.neovide then
+  vim.o.guifont = "Source Code Pro:h17"
+  vim.g.neovide_scale_factor = 1.0
+  vim.g.neovide_padding_top = 0
+  vim.g.neovide_padding_bottom = 0
+  vim.g.neovide_padding_right = 0
+  vim.g.neovide_padding_left = 0
+  vim.g.neovide_confirm_quit = true
+  vim.g.neovide_cursor_animation_length = 0.05
+  vim.g.neovide_cursor_trail_size = 0.4
+  vim.g.neovide_cursor_antialiasing = true
+  vim.g.neovide_cursor_vfx_mode = "torpedo"
+  vim.g.neovide_transparency = 0.95
+  vim.g.neovide_floating_blur_amount = 5
+  vim.g.neovide_hide_mouse_when_typing = true
+  vim.g.neovide_remember_window_size = true
+  vim.g.neovide_title_background_color = "#181825"
+  vim.g.neovide_scroll_animation_length = 0.15
+  vim.api.nvim_set_keymap("n", "<leader>n+", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>", { noremap = true, silent = true, desc = "Increase font size" })
+  vim.api.nvim_set_keymap("n", "<leader>n-", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>", { noremap = true, silent = true, desc = "Decrease font size" })
+  vim.api.nvim_set_keymap("n", "<leader>n0", ":lua vim.g.neovide_scale_factor = 1.0<CR>", { noremap = true, silent = true, desc = "Reset font size" })
+end
