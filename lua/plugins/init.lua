@@ -257,27 +257,26 @@ return {
       end
 
       local function tb(name, opts)
-        if pcall(require, "lazy") then
-          pcall(function() require("lazy").load({ plugins = { "telescope.nvim" } }) end)
-        end
-        local ok, builtin = pcall(require, "telescope.builtin")
-        if not ok or type(builtin[name]) ~= "function" then
-          vim.notify("Telescope is unavailable", vim.log.levels.WARN)
-          return
-        end
-        local anchor_win = vim.api.nvim_get_current_win()
-        local anchor_w = vim.api.nvim_win_get_width(anchor_win)
-        local anchor_h = vim.api.nvim_win_get_height(anchor_win)
-        local clean_dropdown = telescope_themes.get_dropdown({
-          previewer = false,
-          layout_strategy = "center",
-          layout_config = {
-            width = math.max(52, math.floor(anchor_w * 0.82)),
-            height = math.max(12, math.floor(anchor_h * 0.58)),
-          },
-        })
-        local final_opts = vim.tbl_deep_extend("force", clean_dropdown, opts or {})
-        builtin[name](final_opts)
+        vim.schedule(function()
+          local ok, builtin = pcall(require, "telescope.builtin")
+          if not ok or type(builtin[name]) ~= "function" then
+            vim.notify("Telescope is unavailable", vim.log.levels.WARN)
+            return
+          end
+          local anchor_win = vim.api.nvim_get_current_win()
+          local anchor_w = vim.api.nvim_win_get_width(anchor_win)
+          local anchor_h = vim.api.nvim_win_get_height(anchor_win)
+          local clean_dropdown = telescope_themes.get_dropdown({
+            previewer = false,
+            layout_strategy = "center",
+            layout_config = {
+              width = math.max(52, math.floor(anchor_w * 0.82)),
+              height = math.max(12, math.floor(anchor_h * 0.58)),
+            },
+          })
+          local final_opts = vim.tbl_deep_extend("force", clean_dropdown, opts or {})
+          builtin[name](final_opts)
+        end)
       end
 
       pcall(vim.api.nvim_del_user_command, "AlphaFindFiles")

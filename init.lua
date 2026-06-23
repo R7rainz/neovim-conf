@@ -6,7 +6,19 @@ vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
 vim.opt.scrolloff = 8
-vim.opt.clipboard = "unnamed,unnamedplus"
+vim.opt.clipboard = "unnamedplus"
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    local bg = nil
+    vim.api.nvim_set_hl(0, "Normal", { bg = bg })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = bg })
+    vim.api.nvim_set_hl(0, "SignColumn", { bg = bg })
+    vim.api.nvim_set_hl(0, "LineNr", { bg = bg })
+    vim.api.nvim_set_hl(0, "CursorLineNr", { bg = bg })
+    vim.api.nvim_set_hl(0, "FoldColumn", { bg = bg })
+  end,
+})
 
 if vim.fn.executable "xsel" == 1 then
   vim.g.clipboard = {
