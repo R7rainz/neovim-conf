@@ -8,18 +8,6 @@ vim.opt.expandtab = true
 vim.opt.scrolloff = 8
 vim.opt.clipboard = "unnamedplus"
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = function()
-    local bg = nil
-    vim.api.nvim_set_hl(0, "Normal", { bg = bg })
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = bg })
-    vim.api.nvim_set_hl(0, "SignColumn", { bg = bg })
-    vim.api.nvim_set_hl(0, "LineNr", { bg = bg })
-    vim.api.nvim_set_hl(0, "CursorLineNr", { bg = bg })
-    vim.api.nvim_set_hl(0, "FoldColumn", { bg = bg })
-  end,
-})
-
 if vim.fn.executable "xsel" == 1 then
   vim.g.clipboard = {
     name = "xsel",
@@ -79,6 +67,21 @@ require("lazy").setup({
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
+
+local function clear_backgrounds()
+  vim.api.nvim_set_hl(0, "Normal", { bg = nil })
+  vim.api.nvim_set_hl(0, "NormalFloat", { bg = nil })
+  vim.api.nvim_set_hl(0, "SignColumn", { bg = nil })
+  vim.api.nvim_set_hl(0, "LineNr", { bg = nil })
+  vim.api.nvim_set_hl(0, "CursorLineNr", { bg = nil })
+  vim.api.nvim_set_hl(0, "FoldColumn", { bg = nil })
+end
+
+clear_backgrounds()
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = clear_backgrounds,
+})
 
 require "autocmds"
 require "nvchad.mappings"
@@ -183,26 +186,3 @@ map("i", "jk", "<ESC>")
 map("n", "<leader>w/", "<C-w>v", { desc = "Split vertical" })
 map("n", "<leader>w-", "<C-w>s", { desc = "Split horizontal" })
 map("n", "<leader>ww", "<C-w>w", { desc = "Next window" })
-
-if vim.g.neovide then
-  vim.o.guifont = "Source Code Pro:h17"
-  vim.g.neovide_scale_factor = 1.0
-  vim.g.neovide_padding_top = 0
-  vim.g.neovide_padding_bottom = 0
-  vim.g.neovide_padding_right = 0
-  vim.g.neovide_padding_left = 0
-  vim.g.neovide_confirm_quit = true
-  vim.g.neovide_cursor_animation_length = 0.05
-  vim.g.neovide_cursor_trail_size = 0.4
-  vim.g.neovide_cursor_antialiasing = true
-  vim.g.neovide_cursor_vfx_mode = "torpedo"
-  vim.g.neovide_transparency = 0.95
-  vim.g.neovide_floating_blur_amount = 5
-  vim.g.neovide_hide_mouse_when_typing = true
-  vim.g.neovide_remember_window_size = true
-  vim.g.neovide_title_background_color = "#181825"
-  vim.g.neovide_scroll_animation_length = 0.15
-  vim.api.nvim_set_keymap("n", "<leader>n+", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>", { noremap = true, silent = true, desc = "Increase font size" })
-  vim.api.nvim_set_keymap("n", "<leader>n-", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>", { noremap = true, silent = true, desc = "Decrease font size" })
-  vim.api.nvim_set_keymap("n", "<leader>n0", ":lua vim.g.neovide_scale_factor = 1.0<CR>", { noremap = true, silent = true, desc = "Reset font size" })
-end
