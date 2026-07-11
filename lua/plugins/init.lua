@@ -188,7 +188,7 @@ return {
     keys = {
       { "<leader>tt", desc = "Terminal (horizontal)" },
       { "<leader>tv", desc = "Terminal (vertical)" },
-      { "<leader>tf", desc = "Terminal (float)" },
+      { "<C-`>", desc = "Terminal (float)" },
     },
     opts = {
       size = function(term)

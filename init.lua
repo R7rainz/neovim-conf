@@ -1,12 +1,22 @@
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 
+vim.opt.termguicolors = true
+vim.opt.nu = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
 vim.opt.scrolloff = 8
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard:append("unnamedplus")
+
+-- Hightlight yanking
+vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "Highlight when yanking (copying) text",
+    callback = function()
+        vim.hl.on_yank()
+    end,
+})
 
 if vim.fn.executable "xsel" == 1 then
   vim.g.clipboard = {
@@ -68,20 +78,20 @@ require("lazy").setup({
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
 
-local function clear_backgrounds()
-  vim.api.nvim_set_hl(0, "Normal", { bg = nil })
-  vim.api.nvim_set_hl(0, "NormalFloat", { bg = nil })
-  vim.api.nvim_set_hl(0, "SignColumn", { bg = nil })
-  vim.api.nvim_set_hl(0, "LineNr", { bg = nil })
-  vim.api.nvim_set_hl(0, "CursorLineNr", { bg = nil })
-  vim.api.nvim_set_hl(0, "FoldColumn", { bg = nil })
-end
-
-clear_backgrounds()
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = clear_backgrounds,
-})
+-- local function clear_backgrounds()
+--   vim.api.nvim_set_hl(0, "Normal", { bg = nil })
+--   vim.api.nvim_set_hl(0, "NormalFloat", { bg = nil })
+--   vim.api.nvim_set_hl(0, "SignColumn", { bg = nil })
+--   vim.api.nvim_set_hl(0, "LineNr", { bg = nil })
+--   vim.api.nvim_set_hl(0, "CursorLineNr", { bg = nil })
+--   vim.api.nvim_set_hl(0, "FoldColumn", { bg = nil })
+-- end
+--
+-- -- clear_backgrounds()
+--
+-- vim.api.nvim_create_autocmd("ColorScheme", {
+--   callback = clear_backgrounds,
+-- })
 
 require "autocmds"
 require "nvchad.mappings"
@@ -173,7 +183,7 @@ map("n", "<leader>tv", function()
   end
   _vertical_term:toggle()
 end, { desc = "Terminal (vertical)" })
-map("n", "<leader>tf", function()
+map("n", "<C-`>", function()
   local Terminal = require("toggleterm.terminal").Terminal
   if not _float_term then
     _float_term = Terminal:new { direction = "float", hidden = true }
