@@ -239,6 +239,7 @@ return {
     event = "VimEnter",
     dependencies = {
       "nvim-tree/nvim-web-devicons",
+      "rmagatti/auto-session",
       "folke/persistence.nvim",
       { "nhattVim/alpha-ascii.nvim", opts = { header = "random" } },
     },
@@ -256,26 +257,74 @@ return {
         return raw_alpha_draw(...)
       end
 
+      local function centered_picker_opts(opts)
+        local anchor_win = vim.api.nvim_get_current_win()
+        local anchor_w = vim.api.nvim_win_get_width(anchor_win)
+        local anchor_h = vim.api.nvim_win_get_height(anchor_win)
+        local picker_opts = {
+          previewer = false,
+          layout_strategy = "center",
+          layout_config = {
+            width = math.max(52, math.floor(anchor_w * 0.82)),
+            height = math.max(12, math.floor(anchor_h * 0.58)),
+          },
+        }
+        return vim.tbl_deep_extend("force", picker_opts, opts or {})
+      end
+
+      local function dropdown_opts(opts)
+        return telescope_themes.get_dropdown(centered_picker_opts(opts))
+      end
+
       local function tb(name, opts)
         vim.schedule(function()
           local ok, builtin = pcall(require, "telescope.builtin")
-          if not ok or type(builtin[name]) ~= "function" then
+          if not ok then
             vim.notify("Telescope is unavailable", vim.log.levels.WARN)
             return
           end
-          local anchor_win = vim.api.nvim_get_current_win()
-          local anchor_w = vim.api.nvim_win_get_width(anchor_win)
-          local anchor_h = vim.api.nvim_win_get_height(anchor_win)
-          local clean_dropdown = telescope_themes.get_dropdown({
-            previewer = false,
-            layout_strategy = "center",
-            layout_config = {
-              width = math.max(52, math.floor(anchor_w * 0.82)),
-              height = math.max(12, math.floor(anchor_h * 0.58)),
-            },
-          })
-          local final_opts = vim.tbl_deep_extend("force", clean_dropdown, opts or {})
-          builtin[name](final_opts)
+          if type(builtin[name]) ~= "function" then
+            vim.notify("Telescope picker not found: " .. name, vim.log.levels.WARN)
+            return
+          end
+          builtin[name](dropdown_opts(opts))
+        end)
+      end
+
+      local function restore_session_from_directory()
+        vim.schedule(function()
+          local ok_auto_session, auto_session = pcall(require, "auto-session")
+          if not ok_auto_session then
+            vim.notify("auto-session is unavailable", vim.log.levels.WARN)
+            return
+          end
+
+          local ok_lazy, lazy = pcall(require, "lazy")
+          if ok_lazy and type(lazy.load) == "function" then
+            pcall(lazy.load, { plugins = { "telescope.nvim" } })
+          end
+
+          local ok_telescope_picker, telescope_picker = pcall(require, "auto-session.pickers.telescope")
+          if ok_telescope_picker and type(telescope_picker.extension_search_session) == "function" then
+            local ok_picker = pcall(telescope_picker.extension_search_session, {
+              picker_opts = centered_picker_opts({ prompt_title = "Directory Sessions" }),
+            })
+            if ok_picker then
+              return
+            end
+          end
+
+          local ok_select_picker, select_picker = pcall(require, "auto-session.pickers.select")
+          if ok_select_picker and type(select_picker.open_session_picker) == "function" then
+            select_picker.open_session_picker()
+            return
+          end
+
+          if type(auto_session.search) == "function" then
+            auto_session.search()
+          else
+            vim.notify("No session picker is available", vim.log.levels.WARN)
+          end
         end)
       end
 
@@ -293,7 +342,7 @@ return {
         tb("live_grep")
       end, {})
       vim.api.nvim_create_user_command("AlphaFindDirs", function()
-        tb("find_directories")
+        restore_session_from_directory()
       end, {})
 
       local quotes = {
@@ -336,7 +385,7 @@ return {
         val = {
           { type = "text", val = " ┌────────────────────────┬────────────────────────┐", opts = { position = "center", hl = "Comment" } },
           { type = "text", val = grid_line("[f] Find Files", "[r] Recent Files"), opts = { position = "center", hl = "Comment" } },
-          { type = "text", val = grid_line("[g] Find Text", "[d] Find Directory"), opts = { position = "center", hl = "Comment" } },
+          { type = "text", val = grid_line("[g] Find Text", "[d] Restore Directory"), opts = { position = "center", hl = "Comment" } },
           { type = "text", val = grid_line("[c] Config", "[n] New File"), opts = { position = "center", hl = "Comment" } },
           { type = "text", val = grid_line("[s] Restore Session", "[l] Lazy"), opts = { position = "center", hl = "Comment" } },
           { type = "text", val = grid_line("[q] Quit", ""), opts = { position = "center", hl = "Comment" } },
@@ -477,7 +526,7 @@ return {
         vim.keymap.set("n", "f", function() tb("find_files") end, opts)
         vim.keymap.set("n", "r", function() tb("oldfiles", { previewer = false, prompt_title = "Recent Files" }) end, opts)
         vim.keymap.set("n", "g", function() tb("live_grep") end, opts)
-        vim.keymap.set("n", "d", function() tb("find_directories", { prompt_title = "Directories" }) end, opts)
+        vim.keymap.set("n", "d", restore_session_from_directory, opts)
         vim.keymap.set("n", "c", "<cmd>cd ~/.config/nvim | e $MYVIMRC | NvimTreeRefresh<CR>", opts)
         vim.keymap.set("n", "s", "<cmd>lua if _G.restore_session_with_plugins then _G.restore_session_with_plugins() else require('persistence').load() end<CR>", opts)
         vim.keymap.set("n", "n", "<cmd>ene <BAR> startinsert<CR>", opts)
@@ -574,21 +623,22 @@ return {
     lazy = false,
     opts = {
       suppressed_dirs = { "~", "~/", "/", "" },
-      auto_session_enabled = true,
-      auto_save_enabled = true,
-      auto_restore_enabled = true,
-      auto_session_create_enabled = true,
+      enabled = true,
+      auto_save = true,
+      auto_restore = true,
+      auto_create = true,
+      bypass_save_filetypes = { "alpha" },
       session_lens = {
         load_on_setup = true,
-        theme_conf = { border = "rounded" },
+        picker_opts = { border = "rounded", previewer = false },
         previewer = false,
       },
     },
     keys = {
-      { "<leader>ss", "<cmd>SessionSave<cr>", desc = "Save Session" },
-      { "<leader>sl", "<cmd>SessionRestore<cr>", desc = "Restore Session" },
-      { "<leader>sd", "<cmd>SessionDelete<cr>", desc = "Delete Session" },
-      { "<leader>sf", "<cmd>SessionSearch<cr>", desc = "Search Sessions" },
+      { "<leader>ss", "<cmd>AutoSession save<cr>", desc = "Save Session" },
+      { "<leader>sl", "<cmd>AutoSession restore<cr>", desc = "Restore Session" },
+      { "<leader>sd", "<cmd>AutoSession delete<cr>", desc = "Delete Session" },
+      { "<leader>sf", "<cmd>AutoSession search<cr>", desc = "Search Sessions" },
     },
   },
 

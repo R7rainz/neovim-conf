@@ -10,6 +10,8 @@ vim.opt.expandtab = true
 vim.opt.scrolloff = 8
 vim.opt.clipboard:append("unnamedplus")
 
+require "gui"
+
 -- Hightlight yanking
 vim.api.nvim_create_autocmd("TextYankPost", {
     desc = "Highlight when yanking (copying) text",

@@ -26,14 +26,14 @@ screenshots/
 
 ## Features
 
-- **Alpha dashboard** — Custom startup dashboard with random ASCII art header, rotating quotes, and a command grid (find files, find text, find directory, config, restore session, new file, lazy, quit)
+- **Alpha dashboard** — Custom startup dashboard with random ASCII art header, rotating quotes, and a command grid (find files, find text, restore directory session, config, restore session, new file, lazy, quit)
 - **LSP**: gopls (Go), clangd (C/C++), vtsls (TypeScript/JavaScript), html, cssls, jsonls, yamlls, marksman, bashls, dockerls, pyright, rust_analyzer, prismals, emmet_language_server via `nvim-lspconfig`
 - **Formatting**: conform.nvim with prettier, gofumpt, clang-format, stylua, goimports
 - **Completion**: blink.cmp (NvChad's native completion)
 - **Treesitter**: syntax highlighting for all major languages
 - **File explorer**: NvimTree
-- **Telescope**: fuzzy finding, live grep, buffers, help tags, recent files, directories — all with a custom centered dropdown theme
-- **Session management**: auto-session (auto-save/restore) + persistence.nvim (manual restore from dashboard)
+- **Telescope**: fuzzy finding, live grep, buffers, help tags, recent files, directory sessions — all with a custom centered dropdown theme
+- **Session management**: auto-session (auto-save/restore and directory-session picker) + persistence.nvim (manual restore from dashboard)
 - **Terminal**: toggleterm.nvim (horizontal, vertical, float)
 - **Flash**: quick jump and treesitter navigation with `s` / `S`
 - **Which-key**: popup keybinding hints
@@ -54,7 +54,7 @@ Default theme is `palenight` (set in `lua/chadrc.lua`). Switch with `:Telescope 
 | `f` | Find Files |
 | `r` | Recent Files |
 | `g` | Live Grep |
-| `d` | Find Directory |
+| `d` | Restore Directory Session |
 | `s` | Restore Session |
 | `c` | Open Config |
 | `n` | New File |
