@@ -2,8 +2,7 @@ local M = {}
 
 M.font_size = 17
 M.font_candidates = {
-  "SauceCodePro Nerd Font Mono",
-  "SauceCodePro Nerd Font",
+  "JetBrainsMono Nerd Font",
 }
 
 local function font_exists(font)
