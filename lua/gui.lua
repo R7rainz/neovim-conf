@@ -1,6 +1,6 @@
 local M = {}
 
-M.font_size = 17
+M.font_size = 16
 M.font_candidates = {
   "JetBrainsMono Nerd Font",
 }
