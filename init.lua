@@ -79,6 +79,7 @@ require("lazy").setup({
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
+require "highlights"
 
 -- local function clear_backgrounds()
 --   vim.api.nvim_set_hl(0, "Normal", { bg = nil })
