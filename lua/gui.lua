@@ -1,6 +1,8 @@
 local M = {}
 
 M.font_size = 16
+M.min_font_size = 10
+M.max_font_size = 32
 M.font_candidates = {
   "JetBrainsMono Nerd Font",
 }
@@ -32,6 +34,32 @@ end
 
 local function apply_font()
   vim.o.guifont = string.format("%s:h%d", preferred_font(), M.font_size)
+end
+
+function M.set_font_size(size)
+  M.font_size = math.max(M.min_font_size, math.min(M.max_font_size, size))
+  apply_font()
+end
+
+function M.adjust_font_size(delta)
+  M.set_font_size(M.font_size + delta)
+end
+
+local function apply_font_keymaps()
+  local modes = { "n", "i", "v", "x", "s", "o", "t" }
+  local opts = { silent = true, desc = "Increase GUI font size" }
+
+  vim.keymap.set(modes, "<C-+>", function()
+    M.adjust_font_size(1)
+  end, opts)
+
+  vim.keymap.set(modes, "<C-=>", function()
+    M.adjust_font_size(1)
+  end, opts)
+
+  vim.keymap.set(modes, "<C-->", function()
+    M.adjust_font_size(-1)
+  end, { silent = true, desc = "Decrease GUI font size" })
 end
 
 local function apply_neovide()
@@ -76,6 +104,7 @@ end
 function M.setup()
   apply_font()
   apply_neovide()
+  apply_font_keymaps()
 end
 
 M.setup()
