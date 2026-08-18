@@ -17,8 +17,8 @@ return {
         yaml = { "prettier" },
         markdown = { "prettier" },
         prisma = { "prisma_format" },
-        go = { "goimports", "gofumpt" },
-        gomod = { "goimports" },
+        go = { "gofmt" },
+        gomod = { "gofmt" },
         c = { "clang_format" },
         cpp = { "clang_format" },
       },
@@ -44,11 +44,17 @@ return {
         vim.lsp.enable(lsp)
       end
 
-      vim.lsp.config.gopls = {
-        cmd = { "gopls" },
-        filetypes = { "go", "gomod", "gowork", "gotmpl" },
-        root_markers = { "go.work", "go.mod", ".git" },
-        single_file_support = true,
+      local gopls = vim.fn.exepath("gopls")
+      if gopls == "" and vim.fn.executable("go") == 1 then
+        local result = vim.system({ "go", "env", "GOBIN" }, { text = true }):wait()
+        local gobin = result.code == 0 and vim.trim(result.stdout) or ""
+        if gobin ~= "" and vim.fn.executable(gobin .. "/gopls") == 1 then
+          gopls = gobin .. "/gopls"
+        end
+      end
+
+      vim.lsp.config("gopls", {
+        cmd = { gopls ~= "" and gopls or "gopls" },
         settings = {
           gopls = {
             analyses = { unusedparams = true, shadow = true },
@@ -62,22 +68,8 @@ return {
             },
           },
         },
-      }
-      vim.lsp.enable "gopls"
-
-      require("typescript-tools").setup {
-        settings = {
-          tsserver_file_preferences = {
-            includeInlayParameterNameHints = "none",
-            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-            includeInlayFunctionParameterTypeHints = false,
-            includeInlayVariableTypeHints = false,
-            includeInlayPropertyDeclarationTypeHints = false,
-            includeInlayFunctionLikeReturnTypeHints = false,
-            includeInlayEnumMemberValueHints = false,
-          },
-        },
-      }
+      })
+      vim.lsp.enable("gopls")
 
       vim.diagnostic.config {
         virtual_text = true, signs = true, underline = true,
@@ -104,8 +96,11 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
+    lazy = false,
+    build = ":TSUpdate",
+    config = function()
+      local treesitter = require "nvim-treesitter"
+      local languages = {
         "vim",
         "lua",
         "vimdoc",
@@ -136,8 +131,18 @@ return {
         -- optional c/c++
         "c",
         "cpp",
-      },
-    },
+      }
+
+      treesitter.setup()
+      treesitter.install(languages)
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = languages,
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
+      })
+    end,
   },
 
   -- auto close brackets/tags
@@ -160,7 +165,31 @@ return {
       "nvim-lua/plenary.nvim",
       "neovim/nvim-lspconfig",
     },
-    opts = {},
+    init = function()
+      if vim.fn.exepath("tsserver") == "" then
+        local zed_tsservers = vim.fn.glob(
+          vim.fn.expand("~/.local/share/zed/languages/*/node_modules/typescript/bin/tsserver"),
+          true,
+          true
+        )
+        if #zed_tsservers > 0 then
+          vim.env.PATH = vim.fs.dirname(zed_tsservers[1]) .. ":" .. vim.env.PATH
+        end
+      end
+    end,
+    opts = {
+      settings = {
+        tsserver_file_preferences = {
+          includeInlayParameterNameHints = "none",
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = false,
+          includeInlayVariableTypeHints = false,
+          includeInlayPropertyDeclarationTypeHints = false,
+          includeInlayFunctionLikeReturnTypeHints = false,
+          includeInlayEnumMemberValueHints = false,
+        },
+      },
+    },
   },
 
   -- Tailwind CSS tools (install tailwindcss-language-server via :Mason to enable)
@@ -357,7 +386,7 @@ return {
         "Every keystroke is a design decision.",
         "Speed is earned by clarity.",
       }
-      math.randomseed(os.time() + (vim.loop and math.floor(vim.loop.hrtime() % 1000000) or 0))
+      math.randomseed(os.time() + math.floor(vim.uv.hrtime() % 1000000))
       local quote = quotes[math.random(1, #quotes)]
 
       local message = {

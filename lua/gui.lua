@@ -1,6 +1,6 @@
 local M = {}
 
-M.font_size = 16
+M.font_size = 13
 M.min_font_size = 10
 M.max_font_size = 32
 M.font_candidates = {
@@ -9,7 +9,7 @@ M.font_candidates = {
 
 local function font_exists(font)
   if vim.fn.executable("fc-match") == 0 then
-    return font == "SauceCodePro Nerd Font Mono"
+    return font == "JetBrainsMono Nerd Font"
   end
 
   local family_list = vim.fn.systemlist({ "fc-match", "-f", "%{family}", font })[1] or ""

@@ -28,6 +28,8 @@ if vim.fn.executable "xsel" == 1 then
     cache_enabled = 0,
   }
 end
+
+require("config.remote_clipboard").setup()
 vim.opt.relativenumber = true
 
 -- bootstrap lazy and all plugins
@@ -122,13 +124,13 @@ map("n", "<leader>X", "<cmd>bdelete!<cr>", { desc = "Force close buffer" })
 map("n", "<leader>bo", close_other_buffers, { desc = "Close other buffers" })
 
 map("n", "<leader>ff", function()
-  require("telescope.builtin").find_files { cwd = vim.loop.cwd() }
+  require("telescope.builtin").find_files { cwd = vim.uv.cwd() }
 end, { desc = "Find Files" })
 map("n", "<leader>fp", function()
   require("telescope.builtin").find_files { cwd = require("lazy.core.config").options.root }
 end, { desc = "Find Plugin File" })
 map("n", "<leader>fA", function()
-  require("telescope.builtin").find_files { cwd = vim.loop.os_homedir() }
+  require("telescope.builtin").find_files { cwd = vim.uv.os_homedir() }
 end, { desc = "Find files (home)" })
 map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live Grep" })
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
