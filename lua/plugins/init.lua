@@ -3,6 +3,12 @@ return {
     "stevearc/conform.nvim",
     event = "BufWritePre",
     opts = {
+      formatters = {
+        clang_format_cpp = {
+          inherit = "clang_format",
+          prepend_args = { "--style={BasedOnStyle: LLVM, IndentWidth: 4, TabWidth: 4, UseTab: Never}" },
+        },
+      },
       formatters_by_ft = {
         lua = { "stylua" },
         javascript = { "prettier" },
@@ -20,7 +26,7 @@ return {
         go = { "gofmt" },
         gomod = { "gofmt" },
         c = { "clang_format" },
-        cpp = { "clang_format" },
+        cpp = { "clang_format_cpp" },
       },
       format_on_save = {
         timeout_ms = 3000,
