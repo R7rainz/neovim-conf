@@ -51,6 +51,12 @@ return {
       end
 
       local gopls = vim.fn.exepath("gopls")
+      if gopls == "" then
+        local mason_gopls = vim.fn.stdpath("data") .. "/mason/bin/gopls"
+        if vim.fn.executable(mason_gopls) == 1 then
+          gopls = mason_gopls
+        end
+      end
       if gopls == "" and vim.fn.executable("go") == 1 then
         local result = vim.system({ "go", "env", "GOBIN" }, { text = true }):wait()
         local gobin = result.code == 0 and vim.trim(result.stdout) or ""
@@ -220,11 +226,6 @@ return {
   {
     "akinsho/toggleterm.nvim",
     cmd = { "ToggleTerm" },
-    keys = {
-      { "<leader>tt", desc = "Terminal (horizontal)" },
-      { "<leader>tv", desc = "Terminal (vertical)" },
-      { "<C-`>", desc = "Terminal (float)" },
-    },
     opts = {
       size = function(term)
         if term.direction == "horizontal" then
