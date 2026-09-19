@@ -2,6 +2,8 @@ vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 
 vim.opt.termguicolors = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = false
 vim.opt.nu = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4

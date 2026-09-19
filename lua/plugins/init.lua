@@ -1,9 +1,13 @@
 return {
   {
     "stevearc/conform.nvim",
-    event = "BufWritePre",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       formatters = {
+        prettier_typescript = {
+          inherit = "prettier",
+          prepend_args = { "--tab-width", "4", "--use-tabs", "false" },
+        },
         clang_format_cpp = {
           inherit = "clang_format",
           prepend_args = { "--style={BasedOnStyle: LLVM, IndentWidth: 4, TabWidth: 4, UseTab: Never}" },
@@ -13,16 +17,15 @@ return {
         lua = { "stylua" },
         javascript = { "prettier" },
         javascriptreact = { "prettier" },
-        typescript = { "prettier" },
-        typescriptreact = { "prettier" },
+        typescript = { "prettier_typescript" },
+        typescriptreact = { "prettier_typescript" },
         html = { "prettier" },
         css = { "prettier" },
         scss = { "prettier" },
         json = { "prettier" },
-        jsonc = { "prettier" },
         yaml = { "prettier" },
         markdown = { "prettier" },
-        prisma = { "prisma_format" },
+        prisma = { lsp_format = "prefer" },
         go = { "gofmt" },
         gomod = { "gofmt" },
         c = { "clang_format" },
@@ -30,7 +33,7 @@ return {
       },
       format_on_save = {
         timeout_ms = 3000,
-        lsp_fallback = true,
+        lsp_format = "fallback",
       },
     },
   },
@@ -46,17 +49,49 @@ return {
         "emmet_language_server", "pyright", "rust_analyzer", "bashls",
         "dockerls", "marksman", "clangd" }
 
+      local mason_yamlls = vim.fn.stdpath("data") .. "/mason/bin/yaml-language-server"
+      if vim.fn.executable(mason_yamlls) == 1 then
+        vim.lsp.config("yamlls", { cmd = { mason_yamlls, "--stdio" } })
+      end
+
+      local mason_prismals = vim.fn.stdpath("data") .. "/mason/bin/prisma-language-server"
+      vim.lsp.config("prismals", {
+        cmd = function(dispatchers, config)
+          local root = config.root_dir or vim.fn.getcwd()
+          local node_modules = vim.fs.find("node_modules", {
+            path = root,
+            upward = true,
+            type = "directory",
+            limit = 1,
+          })[1]
+          local prisma = node_modules and vim.fs.joinpath(node_modules, ".bin", "prisma")
+
+          if prisma and vim.fn.executable(prisma) == 1 then
+            local lsp_help = vim.system({ prisma, "lsp", "--help" }, {
+              cwd = root,
+              text = true,
+            }):wait()
+            if lsp_help.code == 0 then
+              return vim.lsp.rpc.start({
+                prisma,
+                "lsp",
+                "--stdio",
+                "--client-process-id",
+                tostring(vim.fn.getpid()),
+              }, dispatchers, { cwd = root })
+            end
+          end
+
+          return vim.lsp.rpc.start({ mason_prismals, "--stdio" }, dispatchers, { cwd = root })
+        end,
+      })
+
       for _, lsp in ipairs(servers) do
         vim.lsp.enable(lsp)
       end
 
-      local gopls = vim.fn.exepath("gopls")
-      if gopls == "" then
-        local mason_gopls = vim.fn.stdpath("data") .. "/mason/bin/gopls"
-        if vim.fn.executable(mason_gopls) == 1 then
-          gopls = mason_gopls
-        end
-      end
+      local mason_gopls = vim.fn.stdpath("data") .. "/mason/bin/gopls"
+      local gopls = vim.fn.executable(mason_gopls) == 1 and mason_gopls or vim.fn.exepath("gopls")
       if gopls == "" and vim.fn.executable("go") == 1 then
         local result = vim.system({ "go", "env", "GOBIN" }, { text = true }):wait()
         local gobin = result.code == 0 and vim.trim(result.stdout) or ""
@@ -125,7 +160,6 @@ return {
         "typescript",
         "tsx",
         "json",
-        "jsonc",
         "yaml",
         "toml",
         "markdown",
@@ -177,21 +211,15 @@ return {
       "nvim-lua/plenary.nvim",
       "neovim/nvim-lspconfig",
     },
-    init = function()
-      if vim.fn.exepath("tsserver") == "" then
-        local zed_tsservers = vim.fn.glob(
-          vim.fn.expand("~/.local/share/zed/languages/*/node_modules/typescript/bin/tsserver"),
-          true,
-          true
-        )
-        if #zed_tsservers > 0 then
-          vim.env.PATH = vim.fs.dirname(zed_tsservers[1]) .. ":" .. vim.env.PATH
-        end
-      end
-    end,
     opts = {
       settings = {
+        tsserver_path = vim.fn.expand(
+          "~/.local/share/zed/languages/vtsls/node_modules/typescript/lib/tsserver.js"
+        ),
+        complete_function_calls = true,
         tsserver_file_preferences = {
+          includeCompletionsForModuleExports = true,
+          includeCompletionsForImportStatements = true,
           includeInlayParameterNameHints = "none",
           includeInlayParameterNameHintsWhenArgumentMatchesName = false,
           includeInlayFunctionParameterTypeHints = false,
